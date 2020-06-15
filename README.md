@@ -236,3 +236,59 @@ regResult // ["the", "the"];
 
 ## 4.零宽度断言（前后预查）
 
+> ​	先行断言和后发断言都属于**非捕获簇**（不捕获文本，也不针对组合进行计数）。
+
+| 符号  | 描述            |
+| :---: | --------------- |
+|  ?=   | 正先行断言-存在 |
+|  ? !  | 负先行断言-排除 |
+| ? < = | 正后发断言-存在 |
+| ? < ! | 负后发断言-排除 |
+
+### 4.1？= ...正先行断言
+
+`?=...`正先行断言，表示第一部分表达式必须跟着 `?...`定义的表达式。
+
+返回结果只包含满足匹配条件的第一部分的表达式。定义一个先行断言要使用`()`。在括号内部使用一个问号和一个等号： `(?= ...)`。
+
+> 正先行断言的内容卸载括号中的等号后面。例如，表达式 `(T|t)he(?=\sfat)` 匹配The 与 the， 在括号中我们又定义了正先行断言 `(?=\sfat)`。 即 `The` 与 `the`后面需要紧跟着 `（空格）fat`。
+>
+> ```javascript
+> const reg = /(T|t)he(?=\sfat)/g；
+> const regResult = "The fat cat sat on the mat.".mathc(reg);
+> //regResult => ["The"]
+> ```
+
+### 4.2 ?! ... 负先行断言
+
+负先行断言 `?!`用于筛选所有的匹配结果，筛选条件为 其后不跟随着断言中定义的格式， `正先行断言`定义与`负先行断言`一样。  区别就是 `? = ` 变成了 `? !`;
+
+> ​	表达式 `(T|t)he(?!\sfat)`匹配的是 `The`与`the`且之后不跟着 `(空格)fat`。
+>
+> ```javascript
+> const reg = /(T|t)he(?!\sfat)/;
+> const regResult = "The fat cat sat on the mat.".match(reg);
+> // regResult => ["the"];
+> ```
+
+### 4.3 ?<= ... 正后发断言
+
+正后发断言记作 `(?<= ...)` 用于筛选所有匹配结果， 筛选的条件为其前跟随着断言中定义的格式。例如，表达式`(?<=(T|t)he\s)(fat|mat)` 。 前面的表达式用来匹配 `fat`与 `mat`，且其前面跟着`The`或者`the`。
+
+> ```javascript
+> const reg = /(?<=(T|t)he\s)(fat|mat)/g;
+> const regResult = "The fat cat sat on the mat.".match(reg);
+> // regResult => ["fat","mat"];
+> ```
+
+### 4.4 ?<!... 负后发断言
+
+负后发断言记作 `(?<! ...)`用于筛选所有匹配结果， 筛选的条件为 其前不跟随着断言中定义的格式。例如，表达式  `(?<!(T|t)he\s)(cat)`， 匹配`cat` 且其前面不跟着 `The`或者`the`。
+
+> ```javascript
+> const reg = /(?<!(T|t)he\s)(cat);
+> const regResult = "The cat sat on cat.".match(reg);
+> // regResult => [cat];
+> ```
+>
+> 
