@@ -290,5 +290,24 @@ regResult // ["the", "the"];
 > const regResult = "The cat sat on cat.".match(reg);
 > // regResult => [cat];
 > ```
->
-> 
+
+## 5 标志
+
+标志也叫模式修正符， 因为他可以用来修改表达式的搜索结果。这些标志可以任意的组合使用，它也是整个正则表达式的一部分。
+
+| 标志 | 描述                                                 |
+| :--: | ---------------------------------------------------- |
+|  i   | 忽略大小写                                           |
+|  g   | 全局搜索                                             |
+|  m   | 多行修饰符：锚点元字符 `^` `$`工作范围在每行的起始。 |
+
+### 5.1忽略大小写
+
+修饰语 `i`用来忽略大小写。 例如表达式 `/The/gi`表示全局搜索 `The`， 在后面的 `i`将其条件修改为忽略大小写，则变成了搜索 `the`和 `The`,  `g`表示全局搜索.
+
+```javascript
+const reg = /The/gi;
+const regResult = "The fat cat sat on the mat.".match(reg);
+\\ regResult => ["The", "the"];
+```
+
