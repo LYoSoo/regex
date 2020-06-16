@@ -311,3 +311,50 @@ const regResult = "The fat cat sat on the mat.".match(reg);
 \\ regResult => ["The", "the"];
 ```
 
+### 5.2全局搜索
+
+修饰符 **`g` **用来表示执行全局的匹配，不仅仅返回第一个匹配的结果，而是返回全部的结果。 例如表达式 `/.(at)/g` 表示搜索除换行符意外的任意字符 和 `at`，并返回全部结果.
+
+> ```javascript
+> const reg = /.(at)/g;
+> const regResult = "The fat cat sat on the mat.".mach(reg);
+> // regResult => ["fat","cat","sat","mat"];
+> ```
+
+### 5.3多行修饰符
+
+多行修饰符 `m`用于执行一个多行匹配；
+
+像之前介绍的 `(^,$)` 用于检查格式是否是在待检测字符串的开头或结尾。但我们如果想要它在每行的开头和结尾生效，我们需要用到多行修饰符 `m`。
+
+例如，表达式 `/at(.)?$/gm` 表示小写字符 `a` 后跟小写字符 `t` ，末尾可选除换行符外任意字符。根据 `m` 修饰符，现在表达式匹配每行的结尾。
+
+```javascript
+const reg  = /.at(.)?$/gm;
+const regResult = "The fat
+				cat sat 
+				on the mat.".match(reg);
+// regResult => ["fat","sat", "mat."]
+```
+
+## 6.贪婪匹配原则与惰性匹配原则
+
+正则表达式默认采用贪婪匹配模式，该模式下默认匹配尽可能长的字符串，可以用 `?` 将贪婪模式变成惰性模式。
+
+​	当为贪婪模式时
+
+> ```javascript
+> const reg = /(.*at)/g;
+> const regResult = "The fat cat sat on the mat.".match(reg);
+> // regResult => ["The fat cat sat on the mat"];
+> ```
+>
+> 当为惰性模式时
+>
+> ```javascript
+> const reg = /(.*?at)/g;
+> const regResult = "The fat cat sat on the mat.".match(reg);
+> // regResult => ["The fat"];
+> ```
+>
+> 
